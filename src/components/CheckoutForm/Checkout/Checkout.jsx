@@ -53,7 +53,7 @@ const Checkout = ({ cart }) => {
                         </Step>
                     ))}                    
                  </Stepper>
-                 {activeStep === steps.length ? <Confirmation /> : <Form />}
+                 {activeStep === steps.length ? <Confirmation /> : checkoutToken && <Form />}
              </Paper>
          </main>        
          </>
