@@ -8,11 +8,14 @@ import {
   CircularProgress,
   Divider,
   Button,
+  CssBaseline,
 } from "@material-ui/core";
 import useStyles from "./styles";
 import AddressForm from "../AddressForm";
 import PaymentForm from "../PaymentForm";
 import { commerce } from "../../../lib/commerce";
+import { Link, useHistory } from "react-router-dom";
+
 const steps = ["Shipping address", "Payment details"];
 
 const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
@@ -20,6 +23,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
   const [checkoutToken, setCheckoutToken] = useState(null);
   const [shippingData, setShippingData] = useState({});
   const classes = useStyles();
+  const history = useHistory();
 
   //Turns the cart id from Commerce API into unique checkout token, will re-render every time cart changes
   useEffect(() => {
@@ -32,7 +36,9 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         console.log(token);
 
         setCheckoutToken(token);
-      } catch (error) {}
+      } catch (error) {
+        history.pushState("/");
+      }
     };
 
     generateToken();
@@ -48,9 +54,37 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     nextStep();
   };
 
-  const Confirmation = () => {
-    return <div>Confirmation</div>;
-  };
+  //Makes the confirmation message, but only if the customer exists
+  let Confirmation = () =>
+    order.customer ? (
+      <>
+        <div>
+          <Typography variant="h5">Thank you for your purchase!</Typography>
+          <Divider className={classes.divider} />
+          <Typography variant="subtitle2">
+            Order ref: {order.customer_reference}
+          </Typography>
+          <br />
+          <Button component={Link} to="/" variant="outlined" type="button">
+            Back to Home
+          </Button>
+        </div>
+      </>
+    ) : (
+      <div className={classes.spinner}>
+        <CircularProgress />
+      </div>
+    );
+
+  if (error) {
+    <>
+      <Typography variant="h5">Error: {error}</Typography>
+      <br />
+      <Button component={Link} to="/" variant="outlined" type="button">
+        Back to Home
+      </Button>
+    </>;
+  }
 
   //We will render either, the address form or payment form depending on value of activeStep variable
   //activeStep just tracks where in process user is, if 0, its time to do address, when submitted activeStep becomes 1 and we render payment etc.
@@ -69,6 +103,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
   return (
     <>
+      <CssBaseline />
       <div className={classes.toolbar} />
       <main className={classes.layout}>
         <Paper className={classes.paper}>
