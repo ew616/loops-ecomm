@@ -11,34 +11,39 @@ const App = () => {
     setCart(await commerce.cart.retrieve());
   };
 
+  //Pulls the products that storeowner has set via Commerce.js API
   const fetchProducts = async () => {
     const { data } = await commerce.products.list();
     setProducts(data);
   };
 
+  //Enables the button on each product card to add to Commerce.js cart, all of these funcs are passed to Cart component via props
   const handleAddToCart = async (productId, quantity) => {
     const item = await commerce.cart.add(productId, quantity);
     setCart(item.cart);
     console.log(cart);
   };
 
+  //Same but to remove, only enabled in the cart route, not available on first page
+  const handleRemoveFromCart = async (productId) => {
+    const { cart } = await commerce.cart.remove(productId);
+
+    setCart(cart);
+  };
+
+  //Sets the correct number of each product in the cart
   const handleUpdateCartQty = async (productId, quantity) => {
-        const { cart } = await commerce.cart.update(productId, { quantity })
-        setCart(cart)
-    }
+    const { cart } = await commerce.cart.update(productId, { quantity });
+    setCart(cart);
+  };
 
+  //Empties cart to nothing
+  const handleEmptyCart = async () => {
+    const { cart } = await commerce.cart.empty();
+    setCart(cart);
+  };
 
-    const handleRemoveFromCart = async (productId) => {
-        const { cart } = await commerce.cart.remove(productId);
-
-        setCart(cart);
-    }
-
-    const handleEmptyCart = async () => {
-        const { cart } = await commerce.cart.empty();
-        setCart(cart);
-    }
-
+  //On page load, this will pull all products and existing cart from Commerce.js API
   useEffect(() => {
     fetchProducts();
     fetchCart();
@@ -49,21 +54,21 @@ const App = () => {
       <div>
         <Navbar cartLength={cart.length} totalItems={cart.total_items} />
         <Switch>
-          <Route exact path='/'>
+          <Route exact path="/">
             <Products products={products} onAddToCart={handleAddToCart} />
           </Route>
 
-          <Route exact path='/cart'>
-            <Cart 
-                cart={cart}
-                handleUpdateCartQty={handleUpdateCartQty}
-                handleRemoveFromCart={handleRemoveFromCart}
-                handleEmptyCart={handleEmptyCart}
+          <Route exact path="/cart">
+            <Cart
+              cart={cart}
+              handleUpdateCartQty={handleUpdateCartQty}
+              handleRemoveFromCart={handleRemoveFromCart}
+              handleEmptyCart={handleEmptyCart}
             />
           </Route>
 
-          <Route exact path='/checkout'>
-            <Checkout cart={cart}/>
+          <Route exact path="/checkout">
+            <Checkout cart={cart} />
           </Route>
         </Switch>
       </div>
