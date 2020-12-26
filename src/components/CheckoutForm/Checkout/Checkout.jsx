@@ -10,7 +10,7 @@ import {
   Button,
   CssBaseline,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import useStyles from "./styles";
 import AddressForm from "../AddressForm";
 import PaymentForm from "../PaymentForm";
@@ -23,6 +23,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
   const [checkoutToken, setCheckoutToken] = useState(null);
   const [shippingData, setShippingData] = useState({});
   const classes = useStyles();
+  const history = useHistory();
 
   //Turns the cart id from Commerce API into unique checkout token, will re-render every time cart changes
   useEffect(() => {
@@ -37,6 +38,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         setCheckoutToken(token);
       } catch (error) {
         console.log(error)
+        history.pushState('/');
       }
     };
 

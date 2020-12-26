@@ -11,7 +11,7 @@ const Review = ({ checkoutToken }) => {
       <List disablePadding>
         {checkoutToken.live.line_items.map((product) => {
           return (
-            <div>
+            <div key={product.name}>
               <ListItem style={{ padding: "10px 0" }} key={product.name}>
                 <ListItemText
                   primary={product.name}
