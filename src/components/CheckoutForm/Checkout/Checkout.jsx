@@ -37,8 +37,8 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
 
         setCheckoutToken(token);
       } catch (error) {
+        if (activeStep !== steps.length) history.push('/')
         console.log(error)
-        history.pushState('/');
       }
     };
 

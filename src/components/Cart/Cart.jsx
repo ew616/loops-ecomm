@@ -76,6 +76,7 @@ function Cart({
       <Typography className={classes.title} variant="h4" gutterBottom>
         Your Shopping Cart
       </Typography>
+      <Button variant="outlined" component={Link} to="/" gutterBottom>Back</Button>
       {/* If cart is empty, return the empty component otherwise render the items added */}
       {!cart.line_items ? <EmptyCart /> : <FilledCart />}
     </Container>

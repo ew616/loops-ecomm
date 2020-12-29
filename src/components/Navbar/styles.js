@@ -11,6 +11,7 @@ export default makeStyles((theme) => ({
       marginLeft: drawerWidth,
     },
   },
+  backgroundColor: '#222222',
   title: {
     flexGrow: 1,
     alignItems: 'center',

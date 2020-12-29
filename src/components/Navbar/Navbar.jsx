@@ -12,6 +12,8 @@ import {
 import { ShoppingCart } from "@material-ui/icons";
 import useStyles from "./styles";
 import { Link, useLocation } from "react-router-dom";
+import logo from './logo.png';
+
 
 function Navbar({ totalItems }) {
   const classes = useStyles();
@@ -30,12 +32,12 @@ function Navbar({ totalItems }) {
             color="inherit"
           >
             <img
-              src="https://cdn.logo.com/hotlink-ok/logo-social.png"
-              alt="Commerce.js"
-              height="25px"
+              src={logo}
+              alt="Loops Logo"
+              height="40px"
               className={classes.image}
             />
-            Loops By Emily
+            Loops
           </Typography>
           <div className={classes.grow} />
 
